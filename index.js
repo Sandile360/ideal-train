@@ -241,7 +241,7 @@ app.delete('/song/:id', async(req, res) => {
 }
 );
 
-mongoose.connect('mongodb+srv://sanndlovu021:VUCEjxjj4QQ61rNP@backenddb.o7slgzc.mongodb.net/Node-API?retryWrites=true&w=majority&appName=backendDB')
+mongoose.connect('') //replace with your own MongoDB connection string
 .then(()=> {
     console.log("Connected to MongoDB");
     app.listen(3000, () => {
