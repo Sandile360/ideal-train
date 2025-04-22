@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 
 const Movie = require('./api/movies.js');
 const Series = require('./api/series.js');
-const Song = require('./api/songs.js');
-
+const Songs = require('./api/songs.js');
 const app = express();
 app.use(express.json());
 
@@ -160,6 +159,84 @@ app.post('/movies', async(req, res) => {
     }catch(err){
         console.log(err);
         res.status(404).send('Error creating movie');
+    }
+}
+);
+
+
+// songs
+app.get('/songs', async(req, res) => {
+
+    try{
+        const songs = await Songs.find({});
+        res.status(200).json(songs);
+    }catch(err){
+        console.log(err);
+        res.status(500).send('Error Getting Songs');
+    }
+}
+);
+
+app.get('/song/:id', async(req, res) => {
+
+    try{
+        const {id} = req.params;
+        const song = await Songs.findById(id);
+        res.status(200).json(song);
+
+    }catch(err){
+        console.log(err);
+        res.status(500).send('Error Getting Song');
+    }
+}
+);
+
+app.post('/songs', async(req, res) => {
+
+    try{
+        const songs = await Songs.create(req.body);
+        res.status(200).json(songs);
+        
+    }catch(err){
+        console.log(err);
+        res.status(404).send('Error creating Songs');
+    }
+}
+);
+
+app.put('/song/:id', async(req, res) => {
+
+    try{
+        const {id} = req.params;
+        const song = await Songs.findByIdAndUpdate(id,req.body, {new: true});
+        if(!song){
+            return res.status(404).send('Song not found');
+        }
+        const updatedSong = await Songs.findById(id);
+        res.status(200).json(updatedSong);
+
+
+    }catch(err){
+        console.log(err);
+        res.status(500).send('Error creating Songs');
+    }
+}
+);
+
+
+app.delete('/song/:id', async(req, res) => {
+
+    try{
+        const {id} = req.params;
+        const song = await Songs.findByIdAndDelete(id,req.body);
+        if(!song){
+            return res.status(404).send('Song not found');
+        }
+        res.status(200).json(song);
+
+    }catch(err){
+        console.log(err);
+        res.status(500).send('Error deleting Song');
     }
 }
 );
